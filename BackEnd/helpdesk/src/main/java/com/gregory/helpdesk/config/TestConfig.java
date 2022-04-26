@@ -9,7 +9,7 @@ import com.gregory.helpdesk.services.DBService;
 
 @Configuration
 @Profile("test")
-public class testConfig {
+public class TestConfig {
 	
 	@Autowired
 	private DBService dbService;
