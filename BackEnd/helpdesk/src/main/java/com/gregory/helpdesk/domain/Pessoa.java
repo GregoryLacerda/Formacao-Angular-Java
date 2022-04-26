@@ -1,21 +1,47 @@
 package com.gregory.helpdesk.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gregory.helpdesk.domain.enums.Perfil;
 
-public abstract class Pessoa {
+@Entity
+public abstract class Pessoa implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 	protected String nome;
+	
+	@Column(unique = true)//informa ao banco que não pode ter outra coluna igual a esta
 	protected String cpf;
+	
+	@Column(unique = true)//informa ao banco que não pode ter outra coluna igual a esta
 	protected String email;
+
 	protected String senha;
+
+	@ElementCollection(fetch = FetchType.EAGER) // informa que é um coleção de elementos integer e que a lista venha junto ao user no get
+	@CollectionTable(name = "PERFIS")
 	protected Set<Integer> perfis = new HashSet<>();
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")//formata a data para o padrão brasileiro
 	protected LocalDate dataCriacao = LocalDate.now();//pega o momento em que a instancia do objeto é criado 
 	
 	public Pessoa() {
