@@ -1,5 +1,6 @@
 package com.gregory.helpdesk.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,17 @@ import com.gregory.helpdesk.services.exceptions.ObjectNotFoundException;
 public class ChamadoService {
 	
 	@Autowired
-	private ChamadoRepository repositry;
+	private ChamadoRepository repository;
 	
 	public Chamado findById(Integer id) {
 		
-		Optional<Chamado> obj = repositry.findById(id);
+		Optional<Chamado> obj = repository.findById(id);
 		
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado id: " + id));
+	}
+
+	public List<Chamado> findAll() {
+		return repository.findAll();
 	}
 	
 }
