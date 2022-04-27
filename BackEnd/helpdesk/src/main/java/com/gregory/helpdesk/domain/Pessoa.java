@@ -16,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gregory.helpdesk.domain.enums.Perfil;
 
@@ -29,6 +31,7 @@ public abstract class Pessoa implements Serializable{
 	protected Integer id;
 	protected String nome;
 	
+	@CPF //anotação para verifica se é um cpf valido
 	@Column(unique = true)//informa ao banco que não pode ter outra coluna igual a esta
 	protected String cpf;
 	
