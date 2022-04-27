@@ -1,5 +1,6 @@
 package com.gregory.helpdesk.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,13 @@ public class ChamadoService {
 		return repository.save(newChamado(objDTO));
 	}
 	
+	public Chamado update(Integer id, @Valid ChamadoDTO objDTO) {
+		objDTO.setId(id); // tratando para que não seja passado dados invalidos
+		Chamado oldObj = findById(id);//valida se exite o id informado, se não, ja lança a exceção personalizada
+		oldObj = newChamado(objDTO);
+		return repository.save(oldObj);
+	}
+	
 	private Chamado newChamado(ChamadoDTO obj) {
 		
 		Tecnico tecnico = tecnicoService.findById(obj.getTecnico()); 
@@ -52,6 +60,9 @@ public class ChamadoService {
 		
 		if (obj.getId() != null) {
 			chamado.setId(obj.getId());
+		}
+		if (obj.getStatus().equals(2)) {//verifica se no update o status está com encerrado
+			chamado.setDataFechamento(LocalDate.now());//se sim, atualiza a data de encerramento
 		}
 		
 		chamado.setTecnico(tecnico);
@@ -64,6 +75,8 @@ public class ChamadoService {
 		return chamado;
 		
 	}
+
+	
 }
 
 
